@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<people>
+  <person>
+    <firstName>johny</firstName>
+    <lastName>wilkinson</lastName>
+    <city>seattle</city>
+    <state>wa</state>
+  </person>
+  <person>
+    <firstName>tom</firstName>
+    <lastName>hash</lastName>
+    <city>charlotte</city>
+    <state>nc</state>
+  </person>
+</people>

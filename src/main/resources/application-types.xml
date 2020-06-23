@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="inputCsv" format="csv">
+      <types:shape format="weave" example="input.csv"><![CDATA[%dw 2.0
+
+type inputCsv = Array<{|  firstName: String,   lastName: String,   city: String,   state: String|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0",
+"separator": "~"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+        <types:property name="separator" value="~"/>
+      </types:properties>
+    </types:type>
+    <types:type name="outputXml" format="xml">
+      <types:example format="xml" element="people" location="output.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#b16cfdc5-bffd-41f3-aab6-1b62bfe21485">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="inputCsv"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8e69e9c2-3cad-4e00-9f65-8676a2042156">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="inputCsv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="outputXml"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#63a2fdd3-55e2-4a7c-9612-ce3dca8e6e64">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="inputCsv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="outputXml"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

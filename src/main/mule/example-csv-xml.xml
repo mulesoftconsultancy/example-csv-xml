@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="19189e9c-3da0-4991-a84b-ca22f3f096cf" />
+	<flow name="example-csv-xmlFlow" doc:id="c7cc9792-a3ac-4526-b133-a639a431c6b4" >
+		<scheduler doc:name="Scheduler" doc:id="a18c5fb4-02e3-48ff-9351-8f228dbe780a" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="HOURS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<file:read doc:name="Read" doc:id="0c09316b-e1bd-4e2b-b220-35ba77aebb76" config-ref="File_Config" path="C:\Users\Chaitanya\AnypointStudio\studio-workspace\csv-to-xml\src\main\resources\input.csv" outputMimeType='application/csv; separator=~' />
+		<ee:transform doc:name="csv to xml" doc:id="63a2fdd3-55e2-4a7c-9612-ce3dca8e6e64" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	people: {
+		(payload map ( payload01 , indexOfPayload01 ) -> {
+			person: {
+				firstName: payload01.firstName,
+				lastName: payload01.lastName,
+				city: payload01.city,
+				state: payload01.state
+			}
+		})
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="3683a4d2-22a6-4201-948e-0e43a6183cb2" message="Final Output #[payload]"/>
+	</flow>
+</mule>
